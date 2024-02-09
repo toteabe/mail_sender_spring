@@ -64,18 +64,29 @@ public class MailSenderService {
         mailSender.send(message);
     }
 
+    public void sendWithoutAttach(String from, String to, String subject,
+                               String text) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setFrom(from);
+        helper.setTo(to);
+        helper.setSubject(subject);
+        helper.setText(text, true);
+
+        mailSender.send(message);
+    }
 
     @Async
     public void notificarPorEmail(Usuario usuario) {
 
 //Correo en modo texto
-//            emailService.send(emailSender,
-//                usuario.getEmail(),
-//                usuario.getNombre(),
-//                "Descripción:\n"
-//                        + "Blah, blah"
-//                );
-
+            this.send(emailSender,
+                usuario.getEmail(),
+                usuario.getNombre(),
+                "Descripción:\n"
+                        + "Blah, blah"
+                );
+/*
             Map<String, Object> templateModel = new HashMap<>();
 
             templateModel.put("title", usuario.getNombre());
@@ -105,7 +116,7 @@ public class MailSenderService {
                 throw new RuntimeException(e);
             }
 
-
+*/
     }
 
 }
